@@ -1,0 +1,12 @@
+{
+  "name": "shelf",
+  "displayName": "shelf",
+  "expo": {
+    "name": "shelf",
+    "slug": "shelf",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

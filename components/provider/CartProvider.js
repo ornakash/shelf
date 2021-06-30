@@ -13,8 +13,7 @@ function CartProvider(props) {
         <CartContext.Provider
             value={{
                 myCartItems,
-                setCartItems,
-                myFunc
+                setCartItems
             }}
         >
             {props.children}

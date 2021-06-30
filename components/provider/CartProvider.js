@@ -4,9 +4,6 @@ import { StyleSheet } from 'react-native'
 const CartContext = React.createContext();
 
 function CartProvider(props) {
-
-    const [count, dispatch] = useReducer(counterReducer, []);
-
     const [myCartItems, setCartItems] = useState([]);
     useEffect(() => {
         console.log("CartProvider re-rendered.");

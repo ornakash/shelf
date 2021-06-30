@@ -19,6 +19,7 @@ export default function Homepage() {
     const resetCart = () => {
         setCartItems([]);
     }
+
     const addToCart = (product_id) => {
         let tempArray = [...myCartItems];
 
@@ -34,7 +35,6 @@ export default function Homepage() {
         }
         setCartItems(tempArray);
     }
-
     const pan = useState(new Animated.ValueXY())[0];
     const panResponder = useState(
         PanResponder.create({

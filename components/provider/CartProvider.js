@@ -5,21 +5,9 @@ const CartContext = React.createContext();
 
 function CartProvider(props) {
 
-    const counterReducer = (state, action) => {
-        console.log(state);
-        console.log(action);
-
-    };
-
-    const myFunc = (number) => {
-        console.log("got" + number);
-        dispatch({ type: "INCREASE", by: 1 });
-    }
     const [count, dispatch] = useReducer(counterReducer, []);
 
     const [myCartItems, setCartItems] = useState([]);
-
-
     useEffect(() => {
         console.log("CartProvider re-rendered.");
     }, [myCartItems])

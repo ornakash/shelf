@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native'
+import React, { useEffect, useState, useContext } from 'react'
+import { StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity } from 'react-native'
 
 import products from "../assets/products.js";
+import { CartContext } from './provider/CartProvider.js';
 
 export default function MyCart(props) {
-    const myItems = props.myCart;
+
+    const context = useContext(CartContext);
 
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         setLoading(false);
-    }, [myItems]);
+        console.log("I am updating state");
+    }, [props.myCart]);
 
     const renderCartItems = () => (
-        props.myCart.length > 0 ?
+        props.myCart && props.myCart != undefined && props.myCart.length > 0 ?
             props.myCart.map((product, index) => (<View key={index} style={styles.cartItems}>
                 <Text>{product.count == 1 ? '' : product.count}</Text>
                 <Image
@@ -24,11 +28,14 @@ export default function MyCart(props) {
                 /></View>)) : <Text>אין פריטים בעגלה</Text>
     )
 
+
     if (loading) return <View style={styles.container}><ActivityIndicator size="small" color="red" /></View>
+
     return (
         <View style={{ flex: 1, flexDirection: 'row' }}>
             {renderCartItems()}
         </View>
+
     )
 }
 
@@ -40,6 +47,19 @@ const styles = StyleSheet.create({
     },
     centerText: {
         textAlign: 'center'
+    },
+    cart: {
+        position: 'absolute',
+        bottom: 1,
+        height: 100,
+        width: '100%',
+        borderRadius: 50,
+
+    },
+    cartText: {
+        backgroundColor: 'red',
+        textAlign: 'center',
+        color: 'white',
     },
     cartItems: {
         flexWrap: 'wrap',

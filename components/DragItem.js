@@ -24,7 +24,6 @@ export default function DragItem(props) {
             }
         }
         context.setCartItems(tempArray);
-        context.myFunc(tempArray);
     }
 
     const panResponder = useState(

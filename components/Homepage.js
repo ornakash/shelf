@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Alert, Text, View, PanResponder, Animated, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 
 import products from "../assets/products.js";
@@ -8,8 +8,13 @@ import MyCart from "./MyCart.js";
 const { width } = Dimensions.get("window");
 const height = width * 0.5;
 
-export default function Slider() {
+export default function Homepage() {
     const [myCartItems, setCartItems] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     const resetCart = () => {
         setCartItems([]);
@@ -75,7 +80,7 @@ export default function Slider() {
             }
         })
     )[0];
-
+    if (loading) return <View style={styles.container}><ActivityIndicator size="small" color="red" /></View>
     return (
         <View style={styles.container}>
             <View style={{ width, height: '100%' }}>

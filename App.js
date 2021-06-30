@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import Slider from './components/Slider.js';
+import Homepage from './components/Homepage.js';
 
 export default function App() {
   return (
-    <Slider />
+    <Homepage />
   );
 }

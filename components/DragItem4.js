@@ -1,26 +1,35 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Animated, PanResponder } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet, PanResponder, Animated, Image, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get("window");
+const height = width * 0.5;
 
 import { CartContext } from './provider/CartProvider.js';
 
 export default function DragItem(props) {
     const context = useContext(CartContext);
+    const pan = useState(new Animated.ValueXY())[0];
 
-    const pan = useRef(new Animated.ValueXY()).current;
+    useEffect(() => {
+        console.log("Im rendering now");
+    }, [])
 
-    const panResponder = useRef(
+    const panResponder = useState(
         PanResponder.create({
+            onMoveShouldSetResponderCapture: () => true, //Tell iOS that we are allowing the movement
+            onMoveShouldSetPanResponderCapture: () => true, // Same here, tell iOS that we allow dragging
             onMoveShouldSetPanResponder: () => true,
-            onPanResponderGrant: () => {
+
+            onPanResponderGrant: (e, gestureState) => {
                 pan.setOffset({
-                    x: pan.x._value,
                     y: pan.y._value
                 });
             },
+
             onPanResponderMove: Animated.event(
                 [
                     null,
-                    { dx: pan.x, dy: pan.y }
+                    { dy: pan.y }
                 ],
                 {
                     useNativeDriver: false,
@@ -30,16 +39,18 @@ export default function DragItem(props) {
                 }
             ),
             onPanResponderRelease: (evt, gestureState) => {
-                //pan.flattenOffset();
-                if (gestureState.moveY > 300) {
 
+                pan.flattenOffset();
+                if (gestureState.moveY > 300) {
+                    // Alert.alert("נוסף לעגלת הקניות " + props.product_id);
+                    context?.addToCart(props.product_id);
+                    //addToCart(props.product_id);
+                    //console.log(props.context);
                     Animated.spring(pan, {
                         toValue: 0,
                         useNativeDriver: false
                     },
                     ).start();
-                    context.addToCart(props.product_id);
-
                 }
                 else {
                     Animated.spring(pan, {
@@ -48,10 +59,10 @@ export default function DragItem(props) {
                     },
                     ).start();
                 }
-
             }
         })
-    ).current;
+    )[0];
+
 
     return (
         <Animated.View
@@ -62,5 +73,7 @@ export default function DragItem(props) {
         >
             {props.children}
         </Animated.View>
-    );
+    )
 }
+
+const styles = StyleSheet.create({})

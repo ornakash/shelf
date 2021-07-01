@@ -8,11 +8,8 @@ export default function MyCart(props) {
 
     const context = useContext(CartContext);
 
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
-        setLoading(false);
-        console.log("I am updating state");
+        console.log("MyCart.js rendered");
     }, [props.myCart]);
 
     const renderCartItems = () => (
@@ -27,9 +24,6 @@ export default function MyCart(props) {
                     }}
                 /></View>)) : <Text>אין פריטים בעגלה</Text>
     )
-
-
-    if (loading) return <View style={styles.container}><ActivityIndicator size="small" color="red" /></View>
 
     return (
         <View style={{ flex: 1, flexDirection: 'row' }}>

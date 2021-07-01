@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
 
 import products from "../assets/products.js";
 
@@ -13,37 +13,6 @@ const height = width * 0.5;
 
 export default function Homepage() {
     const context = useContext(CartContext);
-
-    const [loading, setLoading] = useState(true);
-    const [myArray, setMyArray] = useState([]);
-
-
-    useEffect(() => {
-        setMyArray([...context?.myCartItems]);
-    }, [context?.myCartItems])
-    /*
-        if (loading) {
-            return (
-                <View style={{ flexDirection: 'column', flex: 1 }}>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        {products.map((product) => (
-                            <TouchableOpacity key={product.id} onPress={() => context?.addToCart(product.id)}>
-                                <View style={{ flexWrap: 'wrap' }}>
-                                    <Image
-                                        style={{ width: 100, height: 100, flexDirection: 'row' }}
-                                        resizeMode="contain"
-                                        source={{
-                                            uri: product.product_image,
-                                        }}
-                                    />
-                                </View>
-                            </TouchableOpacity>))
-                        }
-                    </View>
-                    <MyCart myCart={context?.myCartItems} />
-                </View>
-            )
-        }*/
     return (
         <View style={styles.container}>
             <View style={{ width, height: '100%' }}>
@@ -54,7 +23,7 @@ export default function Homepage() {
                         showsHorizontalScrollIndicator={false}>
                         {
                             products.map((product) => (
-                                <DragItem product_id={product.id} key={product.id}
+                                <DragItem product={product} key={product.id}
                                 >
                                     <Image
                                         style={{ width: width / 3, height, flex: 1 }}
@@ -69,8 +38,7 @@ export default function Homepage() {
                     </ScrollView>
                     <View style={styles.cart}>
                         <Text onPress={() => context.resetCart()} style={styles.cartText}>עגלת הקניות - לחץ כאן לאיפוס העגלה</Text>
-                        {<MyCart myCart={context?.myCartItems} />}
-                        {/*context?.items.map((obj) => (<Text key={obj.id}>{obj.id} - {obj.value}</Text>))*/}
+                        {<MyCart myCart={context.myCartItems} />}
                     </View>
                 </View>
             </View>

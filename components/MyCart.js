@@ -2,14 +2,12 @@ import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity } from 'react-native'
 
 import products from "../assets/products.js";
-import { CartContext } from './provider/CartProvider.js';
 
 export default function MyCart(props) {
 
-    const context = useContext(CartContext);
-
     useEffect(() => {
-        console.log("MyCart.js rendered");
+        console.log("MyCart.js rendered",
+            { myCart: props.myCart });
     }, [props.myCart]);
 
     const renderCartItems = () => (

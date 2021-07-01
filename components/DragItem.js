@@ -5,7 +5,6 @@ import { CartContext } from './provider/CartProvider.js';
 
 export default function DragItem(props) {
     const context = useContext(CartContext);
-
     const pan = useRef(new Animated.ValueXY()).current;
 
     const panResponder = useRef(
@@ -38,8 +37,7 @@ export default function DragItem(props) {
                         useNativeDriver: false
                     },
                     ).start();
-                    context.addToCart(props.product_id);
-
+                    context.addToCart(props.product);
                 }
                 else {
                     Animated.spring(pan, {

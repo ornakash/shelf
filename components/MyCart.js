@@ -5,8 +5,8 @@ import products from "../assets/products.js";
 
 const CartContext = React.createContext();
 
+
 export default function MyCart(props) {
-    const context = useContext(CartContext);
     useEffect(() => {
         console.log("MyCart.js rendered",
             { myCart: props.myCart });

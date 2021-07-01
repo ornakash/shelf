@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react'
 import { Animated } from 'react-native';
 
@@ -17,6 +18,7 @@ function CartProvider(props) {
             setAddedItem('');
         }, 4000);
     }
+    
     const addToCart = (product) => {
         const cartArray = myCartItems;
         if (!product) {
@@ -33,8 +35,8 @@ function CartProvider(props) {
         }
         cartProduct.count++
         setCartItems([...cartArray]);
-        console.log("🚀 ~ file: CartProvider.js ~ line 24 ~ setCartItems ~ array", myCartItems, cartArray)
     }
+    
     const resetCart = () => {
         const cartArray = [];
         setCartItems([...cartArray]);

@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Animated, PanResponder, View } from 'react-native';
-
+import React, { useContext, useRef, useMemo } from 'react';
+import { Animated, PanResponder } from 'react-native';
 import { CartContext } from './provider/CartProvider.js';
 
 export default function DragItem(props) {
     const context = useContext(CartContext);
-
     const pan = useRef(new Animated.ValueXY()).current;
 
-    const panResponder = useRef(
-        PanResponder.create({
+    const panResponder = useMemo(
+        () => PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderGrant: () => {
                 pan.setOffset({
@@ -42,6 +40,7 @@ export default function DragItem(props) {
                     ).start();
                     context.addToCart(props.product);
                     context.showAddedItem();
+
                 }
                 else {
                     Animated.spring(pan, {
@@ -53,7 +52,7 @@ export default function DragItem(props) {
 
             }
         })
-    ).current;
+    );
 
     return (
         <Animated.View

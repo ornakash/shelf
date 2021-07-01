@@ -1,8 +1,6 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
-
 import products from "../assets/products.js";
-
 import { CartContext } from './provider/CartProvider.js';
 
 import MyCart from "./MyCart.js";
@@ -14,8 +12,6 @@ const height = width * 0.5;
 
 export default function Homepage() {
     const context = useContext(CartContext);
-
-
     return (
         <View style={styles.container}>
             <View style={{ width, height: '100%', flex: 1 }}>
@@ -43,7 +39,10 @@ export default function Homepage() {
                             ))
                         }
                     </ScrollView>
-                    <View>
+
+                    <View style={styles.cart}>
+                        <Text onPress={() => context.resetCart()} style={styles.cartText}>עגלת הקניות - לחץ כאן לאיפוס העגלה</Text>
+                        {<MyCart myCart={context.myCartItems} />}
                         <Text style={{ textAlign: 'center' }}>{context.addedItem}</Text>
                     </View>
                 </View>

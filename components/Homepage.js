@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useContext, useRef } from 'react';
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
 
 import products from "../assets/products.js";
 
@@ -7,6 +7,7 @@ import { CartContext } from './provider/CartProvider.js';
 
 import MyCart from "./MyCart.js";
 import DragItem from './DragItem.js';
+import Animated from 'react-native-reanimated';
 
 const { width } = Dimensions.get("window");
 const height = width * 0.5;
@@ -14,39 +15,14 @@ const height = width * 0.5;
 export default function Homepage() {
     const context = useContext(CartContext);
 
-    const [loading, setLoading] = useState(true);
-    const [myArray, setMyArray] = useState([]);
 
-
-    useEffect(() => {
-        setMyArray([...context?.myCartItems]);
-    }, [context?.myCartItems])
-    /*
-        if (loading) {
-            return (
-                <View style={{ flexDirection: 'column', flex: 1 }}>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        {products.map((product) => (
-                            <TouchableOpacity key={product.id} onPress={() => context?.addToCart(product.id)}>
-                                <View style={{ flexWrap: 'wrap' }}>
-                                    <Image
-                                        style={{ width: 100, height: 100, flexDirection: 'row' }}
-                                        resizeMode="contain"
-                                        source={{
-                                            uri: product.product_image,
-                                        }}
-                                    />
-                                </View>
-                            </TouchableOpacity>))
-                        }
-                    </View>
-                    <MyCart myCart={context?.myCartItems} />
-                </View>
-            )
-        }*/
     return (
         <View style={styles.container}>
-            <View style={{ width, height: '100%' }}>
+            <View style={{ width, height: '100%', flex: 1 }}>
+                <View style={styles.centerItem}>
+                    <Text style={styles.upperText}>סליידר המחובר לעגלת קניות</Text>
+                </View>
+
                 <View style={styles.slider}>
                     <ScrollView
                         horizontal
@@ -54,7 +30,7 @@ export default function Homepage() {
                         showsHorizontalScrollIndicator={false}>
                         {
                             products.map((product) => (
-                                <DragItem product_id={product.id} key={product.id}
+                                <DragItem product={product} key={product.id}
                                 >
                                     <Image
                                         style={{ width: width / 3, height, flex: 1 }}
@@ -67,12 +43,14 @@ export default function Homepage() {
                             ))
                         }
                     </ScrollView>
-                    <View style={styles.cart}>
-                        <Text onPress={() => context.resetCart()} style={styles.cartText}>עגלת הקניות - לחץ כאן לאיפוס העגלה</Text>
-                        {<MyCart myCart={context?.myCartItems} />}
-                        {/*context?.items.map((obj) => (<Text key={obj.id}>{obj.id} - {obj.value}</Text>))*/}
+                    <View>
+                        <Text style={{ textAlign: 'center' }}>{context.addedItem}</Text>
                     </View>
                 </View>
+            </View>
+            <View style={styles.cart}>
+                <Text onPress={() => context?.resetCart()} style={styles.cartText}>עגלת הקניות</Text>
+                {<MyCart myCart={context.myCartItems} />}
             </View>
         </View >
     );
@@ -81,22 +59,17 @@ export default function Homepage() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        padding: 20,
-        alignItems: 'center',
-        justifyContent: 'center'
+        backgroundColor: '#fafafa',
     },
     cart: {
         position: 'absolute',
-        bottom: 1,
-        height: 100,
+        bottom: 0,
         width: '100%',
         borderRadius: 50,
-
-
+        flex: 1,
     },
     cartText: {
-        backgroundColor: 'red',
+        backgroundColor: '#0f1634',
         textAlign: 'center',
         color: 'white',
         padding: 10,
@@ -119,5 +92,15 @@ const styles = StyleSheet.create({
     },
     slider: {
         flex: .5
+    },
+    centerItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 100,
+        backgroundColor: '#0f1634',
+    },
+    upperText: {
+        color: '#fafafa',
+        padding: 10,
     }
 });

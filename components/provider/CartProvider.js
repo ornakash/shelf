@@ -1,33 +1,47 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Animated } from 'react-native';
 
 const CartContext = React.createContext();
 
 function CartProvider(props) {
     const [myCartItems, setCartItems] = useState([]);
+    const [addedItem, setAddedItem] = useState('');
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    const addToCart = (product_id) => {
-        console.log("Added " + product_id + " to cart");
-        const tempArray = [...myCartItems];
-        const found = tempArray.some(product => product.id === product_id);
-        if (!found) tempArray.push({ id: product_id, count: 1 });
-        else {
-            for (let i = 0; i < tempArray.length; i++) {
-                if (tempArray[i].id == product_id) {
-                    tempArray[i].count = tempArray[i].count + 1;
-                    break;
-                }
-            }
+
+    const showAddedItem = () => {
+
+        setAddedItem("המוצר התווסף לעגלת הקניות שלך");
+
+        setTimeout(() => {
+            setAddedItem('');
+        }, 4000);
+    }
+    const addToCart = (product) => {
+        const cartArray = myCartItems;
+        if (!product) {
+            console.error("CartProvider->id not a valid product", product);
+            return;
         }
-        console.log(myCartItems);
-        setCartItems(tempArray);
+        const { id } = product;
+        let cartProduct = cartArray.find(product => product.id === id);
+        if (!cartProduct) {
+            console.log('adding product to cart...')
+            cartProduct = { ...product }
+            cartProduct.count = 0;
+            cartArray.push(cartProduct);
+        }
+        cartProduct.count++
+        setCartItems([...cartArray]);
+        console.log("🚀 ~ file: CartProvider.js ~ line 24 ~ setCartItems ~ array", myCartItems, cartArray)
     }
     const resetCart = () => {
-        setCartItems([]);
+        const cartArray = [];
+        setCartItems([...cartArray]);
     }
 
     useEffect(() => {
-        console.log("CartProvider re-rendered with values: ");
-        console.log(myCartItems);
+        console.log("CartProvider re-rendered with values: ", myCartItems);
     }, [myCartItems])
 
     return (
@@ -36,7 +50,10 @@ function CartProvider(props) {
                 myCartItems,
                 setCartItems,
                 resetCart,
-                addToCart
+                addToCart,
+                showAddedItem,
+                addedItem,
+                fadeAnim
             }}
         >
             {props.children}

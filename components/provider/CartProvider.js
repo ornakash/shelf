@@ -6,7 +6,6 @@ function CartProvider(props) {
 
 
     const addToCart = (product,) => {
-        // const cartArray = [...myCartItems];
         const cartArray = myCartItems
         if (!product) {
             console.error("CartProvider->id not a valid product", product);

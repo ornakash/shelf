@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, ActivityIndicator, Image, TouchableOpacity } fr
 
 import products from "../assets/products.js";
 
-export default function MyCart(props) {
+const CartContext = React.createContext();
 
+
+export default function MyCart(props) {
     useEffect(() => {
         console.log("MyCart.js rendered",
             { myCart: props.myCart });
@@ -12,25 +14,24 @@ export default function MyCart(props) {
 
     const renderCartItems = () => (
         props.myCart && props.myCart != undefined && props.myCart.length > 0 ?
-            props.myCart.map((product, index) => (<View key={index} style={styles.cartItems}>
-                <Text>{product.count == 1 ? '' : product.count}</Text>
+            props.myCart.map((product, index) => (<View key={index}>
+                <View style={styles.countView}>
+                    <Text style={styles.countText}>{product.count == 1 ? '1' : product.count}</Text>
+                </View>
                 <Image
                     style={styles.cartImages}
                     resizeMode="contain"
                     source={{
                         uri: products[product.id].product_image,
                     }}
-                /></View>)) : <Text>אין פריטים בעגלה</Text>
+                /></View>)) : <Text style={{ textAlign: 'center', padding: 2, alignItems: 'center' }}>העגלה ריקה כרגע. אנא הוסף פריטים</Text>
     )
-
     return (
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={styles.cartItems}>
             {renderCartItems()}
         </View>
-
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         padding: 10,
@@ -46,20 +47,32 @@ const styles = StyleSheet.create({
         height: 100,
         width: '100%',
         borderRadius: 50,
-
     },
     cartText: {
-        backgroundColor: 'red',
+        backgroundColor: '#0f1634',
         textAlign: 'center',
-        color: 'white',
+        color: 'red',
     },
     cartItems: {
         flexWrap: 'wrap',
         padding: 1,
+        flexDirection: 'row',
+        bottom: 0,
     },
     cartImages: {
-        height: 45,
-        width: 45,
-        flexWrap: 'wrap'
+        height: 75,
+        width: 75,
+        flexWrap: 'wrap',
+        alignItems: 'center'
+    },
+    countView: {
+        backgroundColor: '#0f1634',
+        borderRadius: 50,
+        width: '50%',
+    },
+    countText: {
+        color: 'white',
+        alignItems: 'center',
+        textAlign: 'center'
     }
 })

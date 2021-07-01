@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useMemo } from 'react';
 import { Animated, PanResponder } from 'react-native';
-
 import { CartContext } from './provider/CartProvider.js';
 
 export default function DragItem(props) {
@@ -24,7 +23,9 @@ export default function DragItem(props) {
                 {
                     useNativeDriver: false,
                     listener: (evt, gestureState) => {
-
+                        if (gestureState.moveY > 1) {
+                            console.log("Im in the zone");
+                        }
                     }
                 }
             ),
@@ -38,6 +39,8 @@ export default function DragItem(props) {
                     },
                     ).start();
                     context.addToCart(props.product);
+                    context.showAddedItem();
+
                 }
                 else {
                     Animated.spring(pan, {

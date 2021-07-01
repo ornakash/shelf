@@ -1,18 +1,32 @@
-import React, { useState, useEffect, useReducer } from 'react'
+
+import React, { useState, useEffect, useRef } from 'react'
+import { Animated } from 'react-native';
+
 const CartContext = React.createContext();
 
 function CartProvider(props) {
     const [myCartItems, setCartItems] = useState([]);
+    const [addedItem, setAddedItem] = useState('');
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
 
-    const addToCart = (product,) => {
-        const cartArray = myCartItems
+    const showAddedItem = () => {
+
+        setAddedItem("המוצר התווסף לעגלת הקניות שלך");
+
+        setTimeout(() => {
+            setAddedItem('');
+        }, 4000);
+    }
+    
+    const addToCart = (product) => {
+        const cartArray = myCartItems;
         if (!product) {
             console.error("CartProvider->id not a valid product", product);
-            return
+            return;
         }
-        const { id } = product
-        let cartProduct = cartArray.find(product => product.id === id)
+        const { id } = product;
+        let cartProduct = cartArray.find(product => product.id === id);
         if (!cartProduct) {
             console.log('adding product to cart...')
             cartProduct = { ...product }
@@ -21,10 +35,11 @@ function CartProvider(props) {
         }
         cartProduct.count++
         setCartItems([...cartArray]);
-        console.log("🚀 ~ file: CartProvider.js ~ line 26 ~ setCartItems ~ array", myCartItems, cartArray)
     }
+    
     const resetCart = () => {
-        setCartItems([]);
+        const cartArray = [];
+        setCartItems([...cartArray]);
     }
 
     useEffect(() => {
@@ -37,7 +52,10 @@ function CartProvider(props) {
                 myCartItems,
                 setCartItems,
                 resetCart,
-                addToCart
+                addToCart,
+                showAddedItem,
+                addedItem,
+                fadeAnim
             }}
         >
             {props.children}
